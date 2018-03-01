@@ -1,4 +1,4 @@
-(ns codox.reader.clojure
+(ns kyber-codox.reader.clojure
   "Read raw documentation information from Clojure source directory."
   (:import java.util.jar.JarFile
            java.io.FileNotFoundException)
@@ -138,9 +138,9 @@
       :deprecated - the library version the var was deprecated in"
   ([] (read-namespaces "src"))
   ([path]
-     (->> (io/file path)
-          (find-namespaces)
-          (mapcat read-ns)
-          (remove :no-doc)))
+   (->> (io/file path)
+        (find-namespaces)
+        (mapcat read-ns)
+        (remove :no-doc)))
   ([path & paths]
-     (mapcat read-namespaces (cons path paths))))
+   (mapcat read-namespaces (cons path paths))))

@@ -1,4 +1,4 @@
-(ns codox.reader.plaintext
+(ns kyber-codox.reader.plaintext
   (:require [clojure.java.io :as io]
             [codox.utils :as util]))
 

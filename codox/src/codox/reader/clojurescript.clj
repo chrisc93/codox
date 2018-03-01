@@ -1,4 +1,4 @@
-(ns codox.reader.clojurescript
+(ns kyber-codox.reader.clojurescript
   "Read raw documentation information from ClojureScript source directory."
   (:use [codox.utils :only [assoc-some update-some correct-indent]])
   (:require [clojure.java.io :as io]

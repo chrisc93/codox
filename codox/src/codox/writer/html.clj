@@ -1,4 +1,4 @@
-(ns codox.writer.html
+(ns kyber-codox.writer.html
   "Documentation writer that outputs HTML."
   (:use [hiccup core page element])
   (:import [java.net URLEncoder]

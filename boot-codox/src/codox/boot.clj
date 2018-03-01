@@ -1,4 +1,4 @@
-(ns codox.boot
+(ns kyber-codox.boot
   {:boot/export-tasks true}
   (:require [clojure.java.io :as io]
             [boot.core :as core :refer [deftask]]
@@ -9,7 +9,7 @@
   (remove pod/dependency-loaded? '[[codox "0.10.3"]]))
 
 (defn- init [fresh-pod]
-  (pod/require-in fresh-pod '[codox.main]))
+  (pod/require-in fresh-pod '[kyber-codox.main]))
 
 (deftask codox
   "Generate documentation in a pod."

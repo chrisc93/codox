@@ -1,4 +1,4 @@
-(ns codox.main
+(ns kyber-codox.main
   "Main namespace for generating documentation"
   (:use [codox.utils :only (add-source-paths)])
   (:require [codox.reader.clojure :as clj]))

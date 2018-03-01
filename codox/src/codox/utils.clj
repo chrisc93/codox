@@ -1,4 +1,4 @@
-(ns codox.utils
+(ns kyber-codox.utils
   "Miscellaneous utility functions."
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
@@ -6,11 +6,11 @@
 (defn assoc-some
   "Associates a key with a value in a map, if and only if the value is not nil."
   ([m k v]
-     (if (nil? v) m (assoc m k v)))
+   (if (nil? v) m (assoc m k v)))
   ([m k v & kvs]
-     (reduce (fn [m [k v]] (assoc-some m k v))
-             (assoc-some m k v)
-             (partition 2 kvs))))
+   (reduce (fn [m [k v]] (assoc-some m k v))
+           (assoc-some m k v)
+           (partition 2 kvs))))
 
 (defn update-some
   "Updates a key in a map with a function, if and only if the return value from
@@ -43,12 +43,12 @@
   "Unindent a block of text by a specific amount or the smallest common
   indentation size."
   ([text]
-     (unindent text (find-smallest-indent text)))
+   (unindent text (find-smallest-indent text)))
   ([text indent-size]
-     (let [re (re-pattern (str "^\\s{0," indent-size "}"))]
-       (->> (str/split-lines text)
-            (map #(str/replace % re ""))
-            (str/join "\n")))))
+   (let [re (re-pattern (str "^\\s{0," indent-size "}"))]
+     (->> (str/split-lines text)
+          (map #(str/replace % re ""))
+          (str/join "\n")))))
 
 (defn correct-indent [text]
   (if text
