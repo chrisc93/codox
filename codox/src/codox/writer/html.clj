@@ -270,18 +270,18 @@
 
 (defn- vars-sidebar [namespace]
   [:div.sidebar.secondary
-   [:h3 (link-to "#top" [:span.inner "Public Vars"])]
+   [:h3 (link-to "#top" [:span.inner "Functions"])]
    [:ul
     (for [var (sorted-public-vars namespace)]
       (list*
        [:li.depth-1
         (link-to (var-uri namespace var) [:div.inner [:span (h (:name var))]])]
-      (for [mem (:members var)]
-        (let [branch? (not= mem (last (:members var)))
-              class   (if branch? "depth-2 branch" "depth-2")
-              inner   [:div.inner (ns-tree-part 0) [:span (h (:name mem))]]]
-          [:li {:class class}
-           (link-to (var-uri namespace mem) inner)]))))]])
+       (for [mem (:members var)]
+         (let [branch? (not= mem (last (:members var)))
+               class   (if branch? "depth-2 branch" "depth-2")
+               inner   [:div.inner (ns-tree-part 0) [:span (h (:name mem))]]]
+           [:li {:class class}
+            (link-to (var-uri namespace mem) inner)]))))]])
 
 (def ^:private default-meta
   [:meta {:charset "UTF-8"}])
@@ -366,10 +366,6 @@
     [:div#content.document
      [:div.doc (format-document project doc)]]]))
 
-(defn- var-usage [var]
-  (for [arglist (:arglists var)]
-    (list* (:name var) arglist)))
-
 (defn- added-and-deprecated-docs [var]
   (list
    (if-let [added (:added var)]
@@ -377,49 +373,13 @@
    (if-let [deprecated (:deprecated var)]
      [:h4.deprecated "deprecated" (if (string? deprecated) (str " in " deprecated))])))
 
-(defn- remove-namespaces [x namespaces]
-  (if (and (symbol? x) (contains? namespaces (namespace x)))
-    (symbol (name x))
-    x))
-
-(defn- normalize-types [types]
-  (read-string (pr-str types)))
-
-(defn- pprint-str [x]
-  (with-out-str (pp/pprint x)))
-
-(defn- type-sig [namespace var]
-  (let [implied-namespaces #{(str (:name namespace)) "clojure.core.typed"}]
-    (->> (:type-sig var)
-         (normalize-types)
-         (walk/postwalk #(remove-namespaces % implied-namespaces))
-         (pprint-str))))
-
 (defn- var-docs [project namespace var]
   [:div.public.anchor {:id (h (var-id (:name var)))}
    [:h3 (h (:name var))]
-   (if-not (= (:type var) :var)
-     [:h4.type (name (:type var))])
-   (if (:dynamic var)
-     [:h4.dynamic "dynamic"])
    (added-and-deprecated-docs var)
-   (if (:type-sig var)
-     [:div.type-sig
-      [:pre (h (type-sig namespace var))]])
-   [:div.usage
-    (for [form (var-usage var)]
-      [:code (h (pr-str form))])]
    [:div.doc (format-docstring project namespace var)]
-   (if-let [members (seq (:members var))]
-     [:div.members
-      [:h4 "members"]
-      [:div.inner
-       (let [project (dissoc project :source-uri)]
-         (map (partial var-docs project namespace) members))]])
-   (if (:source-uri project)
-     (if (:path var)
-       [:div.src-link (link-to (var-source-uri project var) "view source")]
-       (println "Could not generate source link for" (:name var))))])
+   (if-let [analytics (:analytics var)]
+     [:code (h analytics)])])
 
 (defn- namespace-page [project namespace]
   (html5

@@ -47,14 +47,9 @@
 
 (defn- read-var [file vars var]
   (-> var
-      (select-keys [:name :line :arglists :doc :dynamic :added :deprecated :doc/format])
+      (select-keys [:name :doc :added :deprecated :doc/format :analytics])
       (update-some :name (comp symbol name))
-      (update-some :arglists remove-quote)
-      (update-some :doc correct-indent)
-      (assoc-some  :file    (.getPath file)
-                   :type    (var-type var)
-                   :members (map (partial read-var file vars)
-                                 (protocol-methods var vars)))))
+      (update-some :doc correct-indent)))
 
 (defn- read-publics [state namespace file]
   (let [vars (vals (ana/ns-publics state namespace))]
@@ -110,12 +105,12 @@
       :deprecated - the library version the var was deprecated in"
   ([] (read-namespaces "src"))
   ([path]
-     (let [path (io/file path)
-           file-reader (partial read-file path)]
-       (->> (find-files path)
-            (map file-reader)
-            (apply merge)
-            (vals)
-            (sort-by :name))))
+   (let [path (io/file path)
+         file-reader (partial read-file path)]
+     (->> (find-files path)
+          (map file-reader)
+          (apply merge)
+          (vals)
+          (sort-by :name))))
   ([path & paths]
-     (mapcat read-namespaces (cons path paths))))
+   (mapcat read-namespaces (cons path paths))))

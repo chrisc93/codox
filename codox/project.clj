@@ -1,6 +1,6 @@
-(defproject codox "0.10.3"
-  :description "Generate documentation from Clojure source files"
-  :url "https://github.com/weavejester/codox"
+(defproject kyber-codox "0.10.3"
+  :description "Generate analytics documentation from Clojurescript source files"
+  :url "https://github.com/chrisc93/codox"
   :scm {:dir ".."}
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
